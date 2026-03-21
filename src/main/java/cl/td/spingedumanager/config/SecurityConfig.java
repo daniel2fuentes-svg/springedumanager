@@ -64,30 +64,36 @@ public class SecurityConfig {
                 return http.build();
         }
 
-        // Usuarios de prueba en memoria (ADMIN y USER)
+        // Usuarios de prueba en memoria
         @Bean
-        public UserDetailsService userDetailsService() {
-                // 1. Usuario Administrador (puede crear cursos)
+        public UserDetailsService userDetailsService(
+                        org.springframework.security.crypto.password.PasswordEncoder passwordEncoder) {
+                // 1. ADMIN (admin123)
                 UserDetails admin = User.builder()
                                 .username("admin")
-                                .password("{noop}admin123")
+                                .password(passwordEncoder.encode("admin123"))
                                 .roles("ADMIN")
                                 .build();
 
-                // 2. Usuario Normal (solo puede ver, no crear)
+                // 2. USER (user123) - ¡Aquí está de vuelta!
                 UserDetails user = User.builder()
                                 .username("user")
-                                .password("{noop}user123")
+                                .password(passwordEncoder.encode("user123"))
                                 .roles("USER")
                                 .build();
 
-                // NUEVO: Usuario con el rol que definiste arriba en requestMatchers
+                // 3. STUDENT (1588)
                 UserDetails portal = User.builder()
                                 .username("Daniel.Fuentes")
-                                .password("{noop}1588")
+                                .password(passwordEncoder.encode("1588"))
                                 .roles("STUDENT")
                                 .build();
 
                 return new InMemoryUserDetailsManager(admin, user, portal);
+        }
+
+        @Bean
+        public org.springframework.security.crypto.password.PasswordEncoder passwordEncoder() {
+                return new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
         }
 }
