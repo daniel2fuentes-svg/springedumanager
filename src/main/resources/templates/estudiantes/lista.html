@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      th:replace="~{layout :: main-layout(~{::section})}">
+
+    <section>
+        <div class="card shadow-sm p-4">
+            <h2 class="text-primary mb-4 border-bottom pb-2">
+                <i class="bi bi-people-fill"></i> Estudiantes Registrados
+            </h2>
+
+            <!-- Formulario de Registro -->
+            <h3>Registrar Nuevo</h3>
+            <form th:action="@{/estudiantes/guardar}" method="post" class="row g-3 mb-5 align-items-end">
+                                <div class="col-md-5">
+                    <label class="form-label small fw-bold">Nombre</label>
+                    <input type="text" name="nombre" class="form-control" placeholder="Nombre" required>
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label small fw-bold">Email</label>
+                    <input type="email" name="email" class="form-control" placeholder="Email" required>
+                </div>        
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-outline-success btn-sm w-100">Guardar</button>
+                </div>
+            </form>
+            
+            <!-- Filtro de Activos -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="mb-0">Listado</h4>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="filtroTodos">
+                    <label class="form-check-label small fw-bold" for="filtroTodos">Mostrar todos</label>
+                </div>
+            </div>
+                
+            <!-- Tabla de Datos -->
+            <div class="table-responsive">
+                <table class="table table-hover table-striped shadow-sm">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Estado</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="est : ${lista}">
+                            <td th:text="${est.id}" class="fw-bold"></td>
+                            <td th:text="${est.nombre}"></td>
+                            <td th:text="${est.email}"></td>
+                            <td>
+                                <!-- Badge dinámico para estado -->
+                                <span th:if="${est.activo}" class="badge rounded-pill bg-success-subtle text-success">Activo</span>
+                                <span th:unless="${est.activo}" class="badge rounded-pill bg-danger-subtle text-danger">Inactivo</span>
+                            </td>
+                            <td class="text-center">
+                                <!-- Botón Editar -->
+                                <a th:href="@{/estudiantes/editar/{id}(id=${est.id})}" class="btn btn-sm btn-outline-primary me-1">
+                                    <i class="bi bi-pencil-square">Editar</i>
+                                </a>
+                                <!-- Botón Borrado Lógico -->
+                                <form th:action="@{/estudiantes/eliminar/{id}(id=${est.id})}" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" 
+                                            onclick="return confirm('¿Estás seguro de desactivar este estudiante?')">
+                                        <i class="bi bi-trash">Desactivar</i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <hr class="my-4">
+            <div class="d-flex justify-content-end align-items-center gap-2 mt-4">
+                <a th:href="@{/}" class="btn btn-outline-info btn-sm">
+                    <i class="bi bi-house-door"></i> Inicio
+                </a>
+                <div class="text-end">
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="btn btn-outline-danger btn-sm">Cerrar Sesión</button>
+                    </form>
+                </div>
+            </div>    
+        </div>
+        <script>
+            document.getElementById('filtroTodos').addEventListener('change', function() {
+                const mostrarTodos = this.checked;
+                // Redirige a la misma página pero con el parámetro ?todos=true o false
+                window.location.href = '/estudiantes?todos=' + mostrarTodos;
+            });
+
+            // Esto mantiene el checkbox marcado si la página se recarga con ?todos=true
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('todos') === 'true') {
+                document.getElementById('filtroTodos').checked = true;
+            }
+        </script>
+    </section>
+</html>

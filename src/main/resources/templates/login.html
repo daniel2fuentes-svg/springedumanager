@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org" th:replace="~{layout :: main-layout(~{::section})}">
+<head><title>Login - OTEC Spring</title></head>
+<body>
+    <section>
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="card shadow-sm p-4">
+                    <h2 class="text-primary text-center mb-4">Iniciar Sesión</h2>
+           
+                    <!-- Alertas de Bootstrap para los mensajes -->
+                    <div th:if="${param.error}" class="alert alert-danger py-2 text-center" role="alert">
+                        Usuario o clave incorrectos.
+                    </div>
+                    
+                    <div th:if="${param.logout}" class="alert alert-success py-2 text-center" role="alert">
+                        Has cerrado sesión correctamente.
+                    </div>
+
+                     <form th:action="@{/login}" method="post">
+                        <div class="mb-3">
+                            <label class="texto-listado mb-1">Usuario</label>
+                            <input type="text" name="username" class="form-control" 
+                                   placeholder="Nombre de usuario" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="texto-listado mb-1">Contraseña</label>
+                            <input type="password" name="password" class="form-control" 
+                                   placeholder="••••••••" required>
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary">Entrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

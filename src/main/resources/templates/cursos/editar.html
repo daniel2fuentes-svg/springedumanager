@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org" 
+      th:replace="~{layout :: main-layout(~{::section})}">
+
+    <section>
+        <div class="card shadow-sm p-4">
+            <h2 class="text-primary mb-4 border-bottom pb-2">
+                <i class="bi bi-pencil-square"></i> Editar Estudiante
+            </h2>
+
+            <!-- Formulario de Edición -->
+            <!-- Al usar th:object, Thymeleaf rellena los campos automáticamente -->
+            <form th:action="@{/cursos/guardar}" th:object="${curso}" method="post" class="row g-3">
+                
+                <!-- ID oculto (Esencial para que sepa qué registro actualizar y no cree uno nuevo) -->
+                <input type="hidden" th:field="*{id}">
+                <!-- Estado oculto (Para no perder si estaba activo o no al editar) -->
+                <input type="hidden" th:field="*{activo}">
+
+                <div class="col-md-6">
+                    <label class="form-label small fw-bold">Nombre Completo</label>
+                    <input type="text" th:field="*{nombre}" class="form-control" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label small fw-bold">Descripción del Curso</label>
+                    <input type="text" th:field="*{descripcion}" class="form-control" maxlength="200" required>
+                    <div class="form-text">Máximo 200 caracteres.</div>
+                </div>   
+                
+                <div class="mb-3 form-check">
+                    <input type="checkbox" 
+                        th:field="*{activo}"
+                        class="form-check-input" 
+                        id="estadoCurso" 
+                        name="activo" 
+                        th:checked="${curso.activo}"> 
+                    <label class="form-check-label texto-listado" for="estadoCurso">
+                        Activar Curso
+                    </label>
+                </div>
+
+                <div class="mt-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save"></i> Guardar Cambios
+                    </button>
+                    <a th:href="@{/cursos}" class="btn btn-outline-secondary">
+                        Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </section>
+</html>

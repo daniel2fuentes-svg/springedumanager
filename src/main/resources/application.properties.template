@@ -1,0 +1,29 @@
+spring.application.name=spingedumanager
+# Configuración de base de datos MariaDB
+spring.datasource.url=jdbc:mariadb://localhost:3306/BASE_DE_DATOS
+spring.datasource.username=USER
+spring.datasource.password=PASSWORD
+spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
+
+# Configuración de usuario básico para Spring Security
+spring.security.user.name=admin
+spring.security.user.password=admin123
+spring.security.user.roles=ADMIN
+
+# Configuración Hibernate
+spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MariaDBDialect
+
+# 1. Optimización del Motor de Vistas (Thymeleaf)
+# En producción debe ser true para que sea rápido. 
+# Si estás editando el HTML y quieres ver cambios sin reiniciar, déjalo en false.
+spring.thymeleaf.cache=true
+
+# 2. Optimización de la Base de Datos (Pool de Conexiones)
+# HikariCP es el estándar; configurarlo evita que Spring "piense" tanto al pedir datos.
+spring.datasource.hikari.maximum-pool-size=10
+spring.datasource.hikari.minimum-idle=5
+spring.datasource.hikari.idle-timeout=300000
+spring.datasource.hikari.connection-timeout=20000
+
