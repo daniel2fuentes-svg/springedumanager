@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:fragment="main-layout(content)">
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://thymeleaf.org"
+      th:fragment="main-layout(content)">
 <head>
     <meta charset="UTF-8">
     <title>Gestión de Estudiantes</title>
@@ -9,6 +11,8 @@
     <style>
         /* Aquí puedes agregar tu CSS personalizado para la 'Identidad' */
         .card { border-radius: 15px; }
+        .navbar { margin-bottom: 30px; background-color: #007bff !important;box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); border: none; }
+        .navbar-brand, .nav-link {color: #ffffff !important;}
         .text-primary { color: #0056b3 !important; }
         .texto-listado { 
             font-weight: 600;
@@ -21,6 +25,44 @@
     </style>
 </head>
 <body class="bg-light">
+
+    <!-- Navbar Dinámica -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">EduGestion</a>
+            
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <!-- ACCESO PARA ADMIN Y USER (Asesores): Ambos pueden listar -->
+                    <li class="nav-item dropdown" sec:authorize="hasAnyRole('ADMIN', 'USER')">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Gestión</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" th:href="@{/cursos/lista}">Listado de Cursos</a></li>
+                            <li><a class="dropdown-item" th:href="@{/estudiantes/lista}">Listado de Estudiantes</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Solo visible para ESTUDIANTES (Rol STUDENT): Basado en tu carpeta Students/ -->
+                    <li class="nav-item" sec:authorize="hasRole('STUDENT')">
+                        <a class="nav-link" th:href="@{/Students/dashboard}">Mi Portal Estudiante</a>
+                    </li>
+                </ul>
+
+                    
+                <!-- Información de sesión y Logout -->
+                <div class="d-flex align-items-center text-white">
+                    <span class="me-3" sec:authorize="isAuthenticated()">
+                        Hola, <span sec:authentication="name">Usuario</span> 
+                        <small class="badge bg-secondary ms-1" sec:authentication="principal.authorities">Rol</small>
+                    </span>
+                    <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()">
+                        <!-- Importante: Spring Security requiere que el logout sea POST -->
+                        <button class="btn btn-outline-danger btn-sm" type="submit">Cerrar Sesión</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
 
     <div class="container py-5">
         <!-- El contenido dinámico se insertará aquí -->

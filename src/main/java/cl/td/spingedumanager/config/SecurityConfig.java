@@ -36,12 +36,25 @@ public class SecurityConfig {
                                                 .requestMatchers("/cursos/guardar/**", "/estudiantes/guardar/**")
                                                 .hasRole("ADMIN")
 
+                                                // Desafío sobre proyecto original ABP 6
+                                                .requestMatchers("/portal/**").hasRole("STUDENT")
+
                                                 // 4. Todo lo demás (Dashboard, ver listas, etc.) requiere cualquier
                                                 // login exitoso
                                                 .anyRequest().authenticated())
                                 .formLogin(form -> form
-                                                .loginPage("/login") // Nuestra vista personalizada
-                                                .defaultSuccessUrl("/dashboard", true) // A dónde ir al entrar
+                                                .loginPage("/login")
+                                                .successHandler((request, response, authentication) -> {
+                                                        // Lógica para decidir a dónde enviarlos
+                                                        var roles = authentication.getAuthorities();
+                                                        if (roles.stream().anyMatch(
+                                                                        r -> r.getAuthority().equals("ROLE_STUDENT"))) {
+                                                                response.sendRedirect("/portal/dashboard");
+                                                        } else {
+                                                                response.sendRedirect("/dashboard"); // Admin y otros
+                                                                                                     // van aquí
+                                                        }
+                                                })
                                                 .permitAll())
                                 .logout(logout -> logout
                                                 .logoutUrl("/logout")
@@ -61,13 +74,20 @@ public class SecurityConfig {
                                 .roles("ADMIN")
                                 .build();
 
-                // 2. Usuario Estudiante/Normal (solo puede ver, no crear)
+                // 2. Usuario Normal (solo puede ver, no crear)
                 UserDetails user = User.builder()
                                 .username("user")
                                 .password("{noop}user123")
                                 .roles("USER")
                                 .build();
 
-                return new InMemoryUserDetailsManager(admin, user);
+                // NUEVO: Usuario con el rol que definiste arriba en requestMatchers
+                UserDetails portal = User.builder()
+                                .username("Daniel.Fuentes")
+                                .password("{noop}1588")
+                                .roles("STUDENT")
+                                .build();
+
+                return new InMemoryUserDetailsManager(admin, user, portal);
         }
 }
