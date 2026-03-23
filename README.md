@@ -67,3 +67,53 @@ Haz un Commit de tus cambios (git commit -m 'Añade nueva funcionalidad').
 Haz un Push a la rama (git push origin feature/NuevaFuncionalidad).
 Abre un Pull Request.
 Desarrollado por Daniel Fuentes
+```
+## 🗄️ Estructura de Base de Datos (SQL)
+-- 1. Crear y usar la base de datos
+CREATE DATABASE IF NOT EXISTS springedumanager;
+USE springedumanager;
+
+-- 2. Estructura de la tabla 'cursos'
+CREATE TABLE IF NOT EXISTS cursos (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    activo TINYINT(1) DEFAULT 1
+);
+
+-- 3. Estructura de la tabla 'estudiantes'
+CREATE TABLE IF NOT EXISTS estudiantes (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    activo TINYINT(1) DEFAULT 1,
+    UNIQUE (email)
+);
+
+-- 4. Estructura de la tabla de unión 'estudiante_curso'
+CREATE TABLE IF NOT EXISTS estudiante_curso (
+    estudiante_id BIGINT NOT NULL,
+    curso_id BIGINT NOT NULL,
+    PRIMARY KEY (estudiante_id, curso_id),
+    FOREIGN KEY (estudiante_id) REFERENCES estudiantes(id) ON DELETE CASCADE,
+    FOREIGN KEY (curso_id) REFERENCES cursos(id) ON DELETE CASCADE
+);
+
+-- 5. Carga de Datos de Prueba (Inserts)
+INSERT INTO cursos (nombre, descripcion, activo) VALUES 
+('Programación Java', 'Curso básico de Java con Spring Boot', 1),
+('Bases de Datos SQL', 'Fundamentos de MySQL y MariaDB', 1),
+('Desarrollo Frontend', 'HTML, CSS y JavaScript moderno', 1);
+
+INSERT INTO estudiantes (nombre, email, activo) VALUES 
+('Juan Pérez', 'juan.perez@example.com', 1),
+('María García', 'm.garcia@example.com', 1),
+('Carlos López', 'carlos.lopez@example.com', 0),
+('Ana Martínez', 'ana.mtz@example.com', 1);
+
+-- Inscripciones de prueba (Relacionando estudiantes con cursos)
+INSERT INTO estudiante_curso (estudiante_id, curso_id) VALUES 
+(1, 1), (1, 2), -- Juan en Java y SQL
+(2, 1),         -- María en Java
+(4, 3);         -- Ana en Frontend
+
