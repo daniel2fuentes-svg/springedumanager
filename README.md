@@ -59,16 +59,10 @@ src/main/java/com/tu/paquete/
 └── config/        # Configuraciones de seguridad/app
  ```
  
-## 🤝 Contribuciones
-¡Las contribuciones son bienvenidas!
-Haz un Fork del proyecto.
-Crea una Rama para tu función (git checkout -b feature/NuevaFuncionalidad).
-Haz un Commit de tus cambios (git commit -m 'Añade nueva funcionalidad').
-Haz un Push a la rama (git push origin feature/NuevaFuncionalidad).
-Abre un Pull Request.
-Desarrollado por Daniel Fuentes
-```
+
 ## 🗄️ Estructura de Base de Datos (SQL)
+
+```
 -- 1. Crear y usar la base de datos
 CREATE DATABASE IF NOT EXISTS springedumanager;
 USE springedumanager;
@@ -116,4 +110,17 @@ INSERT INTO estudiante_curso (estudiante_id, curso_id) VALUES
 (1, 1), (1, 2), -- Juan en Java y SQL
 (2, 1),         -- María en Java
 (4, 3);         -- Ana en Frontend
+```
 
+
+## 🤝 Contribuciones
+
+```
+¡Las contribuciones son bienvenidas!
+Haz un Fork del proyecto.
+Crea una Rama para tu función (git checkout -b feature/NuevaFuncionalidad).
+Haz un Commit de tus cambios (git commit -m 'Añade nueva funcionalidad').
+Haz un Push a la rama (git push origin feature/NuevaFuncionalidad).
+Abre un Pull Request.
+```
+Desarrollado por Daniel Fuentes
