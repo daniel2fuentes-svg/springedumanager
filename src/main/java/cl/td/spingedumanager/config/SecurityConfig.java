@@ -84,8 +84,8 @@ public class SecurityConfig {
 
                 // 3. STUDENT (1588)
                 UserDetails portal = User.builder()
-                                .username("Daniel.Fuentes")
-                                .password(passwordEncoder.encode("1588"))
+                                .username("estudiante")
+                                .password(passwordEncoder.encode("estu123"))
                                 .roles("STUDENT")
                                 .build();
 

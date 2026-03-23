@@ -1,8 +1,8 @@
 spring.application.name=spingedumanager
 # Configuración de base de datos MariaDB
-spring.datasource.url=jdbc:mariadb://localhost:3306/BASE_DE_DATOS
-spring.datasource.username=USER
-spring.datasource.password=PASSWORD
+spring.datasource.url=jdbc:mariadb://localhost:3306/springedumanager
+spring.datasource.username=app_user
+spring.datasource.password=123456
 spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
 
 # Configuración de usuario básico para Spring Security
@@ -12,7 +12,7 @@ spring.security.user.roles=ADMIN
 
 # Configuración Hibernate
 spring.jpa.hibernate.ddl-auto=validate
-spring.jpa.show-sql=true
+spring.jpa.show-sql=false
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MariaDBDialect
 
 # 1. Optimización del Motor de Vistas (Thymeleaf)
